@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="8" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
+        android:weightSum="1"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/frag_orden_text_solicitud_id"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="@string/idSolicitud"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="0.5" />
+
+        <TextView
+            android:id="@+id/frag_orden_text_estado"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:text="@string/estado"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="0.5" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/frag_orden_text_direccion"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:text="@string/direccion"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/frag_orden_text_referencia"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:text="@string/referencia"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/frag_orden_text_descripcion"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:text="@string/descripcion"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <FrameLayout
+        android:id="@+id/frameMapa"
+        android:onClick="irMapa"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="3.5" >
+        
+	    <fragment
+	        android:id="@+id/map"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:name="com.google.android.gms.maps.MapFragment" />
+    </FrameLayout>
+
+    <!-- <LinearLayout
+        android:id="@+id/layoutActions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.5"
+        android:orientation="horizontal"
+        android:baselineAligned="false" >
+
+        <LinearLayout
+            android:id="@+id/layoutHistoria"
+	        android:layout_width="0sp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="0.5"
+	        android:gravity="center" >
+	        
+	        <ImageButton
+	            android:id="@+id/frag_orden_image_button_historia"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:src="@drawable/ic_launcher"
+	            android:contentDescription="@string/tomar_foto" />
+		</LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutMapa"
+	        android:layout_width="0sp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="0.5"
+	        android:gravity="center" >
+	        
+	        <ImageButton
+	            android:id="@+id/frag_orden_image_button_mapa"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:src="@drawable/ic_launcher"
+	            android:contentDescription="@string/tomar_foto" />
+		</LinearLayout>
+		
+        <FrameLayout
+            android:id="@+id/frameIniciarReporte"
+            android:layout_width="0sp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:visibility="gone" >
+
+            <fragment
+                android:id="@+id/FragIniciarReporte"
+                android:name="com.geos.gestorbaches.fragments.FragIniciarReporte"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            
+        </FrameLayout>
+        
+        <FrameLayout
+            android:id="@+id/frameConcluirReporte"
+            android:layout_width="0sp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:visibility="gone" >
+
+            <fragment
+                android:id="@+id/FragConcluirReporte"
+                android:name="com.geos.gestorbaches.fragments.FragConcluirReporte"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            
+        </FrameLayout>
+
+    </LinearLayout> -->
+
+    <Button
+        android:id="@+id/frag_orden_button_reporte"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="0sp"
+        android:gravity="center"
+        android:text="@string/reporte" />
+
+</LinearLayout>

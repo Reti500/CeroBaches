@@ -1,0 +1,5 @@
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    class="com.geos.gestor.cerobaches.fragments.MainFragment"
+    android:id="@+id/main_fragment"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" />
