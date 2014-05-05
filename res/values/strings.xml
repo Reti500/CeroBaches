@@ -17,5 +17,6 @@
     <string name="tomar_foto">Tomar foto</string>
     <string name="reporte">Hacer Reporte</string>
     <string name="title_activity_iniciar_reporte">IniciarReporteActivity</string>
+    <string name="iniciar_reporte">Iniciar Reporte</string>
 
 </resources>
