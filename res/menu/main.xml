@@ -3,5 +3,7 @@
     tools:context="com.geos.gestor.cerobaches.MainActivity" >
     <item android:id="@+id/menu_logout"
         android:title="Salir" />
+    <item android:id="@+id/nueva_solicitud"
+        android:title="NuevaSolicitud"/>
 
 </menu>

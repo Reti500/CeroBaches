@@ -22,5 +22,6 @@
     <string name="title_activity_concluir_reporte">ConcluirReporteActivity</string>
     <string name="numero_de_costales"># de costales</string>
     <string name="comentarios">Comentarios:</string>
+    <string name="title_activity_nueva_solicitud">NuevaSolicitudActivity</string>
 
 </resources>

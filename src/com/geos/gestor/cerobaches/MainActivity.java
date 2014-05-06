@@ -76,6 +76,9 @@ public class MainActivity extends FragmentActivity implements MainListener  {
 					}
 				});
 				break;
+			case R.id.nueva_solicitud:
+				goNuevaSolicitud();
+				break;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -127,6 +130,11 @@ public class MainActivity extends FragmentActivity implements MainListener  {
 		
 		startActivity(i);
 		finish();
+	}
+	
+	public void goNuevaSolicitud(){
+		Intent i = new Intent().setClass(MainActivity.this, NuevaSolicitudActivity.class);
+		startActivity(i);
 	}
 
 	@Override
