@@ -7,6 +7,7 @@ import com.geos.gestor.cerobaches.fragments.MainFragment;
 import com.geos.gestor.cerobaches.interfaces.MainListener;
 import com.geos.gestor.cerobaches.libs.BachesComunicador;
 import com.geos.gestor.cerobaches.libs.Comunicador.ResponseListener;
+import com.geos.gestor.cerobaches.libs.Datos;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 public class MainActivity extends FragmentActivity implements MainListener  {
 
 	private ProgressDialog dialog;
+	private Datos datos;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +35,17 @@ public class MainActivity extends FragmentActivity implements MainListener  {
 //					.add(R.id.main_fragment, new MainFragment()).commit();
 		}
 		
+		datos = Datos.getInstance();
+		
 		((MainFragment)getSupportFragmentManager().
 				findFragmentById(R.id.main_fragment)).setListener(this);
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		
+		datos.adapter.notifyDataSetChanged();
 	}
 
 	@Override

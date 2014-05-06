@@ -82,7 +82,7 @@ public class OrdenFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if(listener != null){
-					listener.onClickReporte(orden_position);
+					listener.onClickReporte();
 				}
 			}
 		});

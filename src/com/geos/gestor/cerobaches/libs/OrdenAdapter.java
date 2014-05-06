@@ -92,7 +92,7 @@ public class OrdenAdapter extends ArrayAdapter<Orden> {
 	}
 	
 	public Orden getOrden(int pos){
-		return data.get(pos-1);
+		return data.get(pos);
 	}
 	
 	public void update(ArrayList<Orden> new_data){

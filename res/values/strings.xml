@@ -18,5 +18,6 @@
     <string name="reporte">Hacer Reporte</string>
     <string name="title_activity_iniciar_reporte">IniciarReporteActivity</string>
     <string name="iniciar_reporte">Iniciar Reporte</string>
+    <string name="title_activity_concluir_reporte">ConcluirReporteActivity</string>
 
 </resources>

@@ -2,28 +2,34 @@ package com.geos.gestor.cerobaches;
 
 import com.geos.gestor.cerobaches.fragments.OrdenFragment;
 import com.geos.gestor.cerobaches.interfaces.OrdenListener;
+import com.geos.gestor.cerobaches.libs.Datos;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class OrdenActivity extends FragmentActivity implements OrdenListener {
 
 	private OrdenFragment frag_orden;
+	private int orden_position;
+	private Datos datos;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_orden);
 
+		datos = Datos.getInstance();
+		
 		if (savedInstanceState == null) {
 //			getFragmentManager().beginTransaction()
 //					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
-		int orden_position = getIntent().getExtras().getInt("position");
+		orden_position = getIntent().getExtras().getInt("position");
 		
 		frag_orden = (OrdenFragment) getSupportFragmentManager().findFragmentById(R.id.orden_fragment);
 		frag_orden.setOrdenPosition(orden_position);
@@ -51,12 +57,28 @@ public class OrdenActivity extends FragmentActivity implements OrdenListener {
 	}
 
 	@Override
-	public void onClickReporte(int position) {
+	public void onClickReporte() {
 		// TODO Auto-generated method stub
-		Intent i = new Intent().setClass(OrdenActivity.this, IniciarReporteActivity.class);
+		int estatus = Integer.parseInt(datos.adapter.getOrden(orden_position).getEstatusId());
 		
-		i.putExtra("orden_position", position);
-		startActivity(i);
+		if(estatus == 7){
+			goIniciarRepote();
+		}else if(estatus == 8){
+			goConcluirReposte();
+		}else{
+			Toast.makeText(this, "Reporte finalizado", Toast.LENGTH_SHORT).show();
+		}
 	}
 
+	public void goIniciarRepote(){
+		Intent i = new Intent().setClass(OrdenActivity.this, IniciarReporteActivity.class);
+		i.putExtra("orden_position", orden_position);
+		startActivity(i);
+	}
+	
+	public void goConcluirReposte(){
+		Intent i = new Intent().setClass(OrdenActivity.this, ConcluirReporteActivity.class);
+		i.putExtra("orden_position", orden_position);
+		startActivity(i);
+	}
 }
