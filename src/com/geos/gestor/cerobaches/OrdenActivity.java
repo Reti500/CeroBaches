@@ -35,6 +35,13 @@ public class OrdenActivity extends FragmentActivity implements OrdenListener {
 		frag_orden.setOrdenPosition(orden_position);
 		frag_orden.setListener(this);
 	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		
+		frag_orden.setOrdenPosition(orden_position);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

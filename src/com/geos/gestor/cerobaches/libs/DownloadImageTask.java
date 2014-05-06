@@ -2,7 +2,6 @@ package com.geos.gestor.cerobaches.libs;
 
 import java.io.InputStream;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;

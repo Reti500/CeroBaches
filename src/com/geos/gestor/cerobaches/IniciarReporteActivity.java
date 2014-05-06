@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import com.geos.gestor.cerobaches.fragments.IniciarReporteFragment;
 import com.geos.gestor.cerobaches.interfaces.IniciarReporteListener;
+import com.geos.gestor.cerobaches.libs.CreateOrdenJson;
 import com.geos.gestor.cerobaches.libs.Datos;
 import com.geos.gestor.cerobaches.libs.Files;
 import com.geos.gestor.cerobaches.libs.Orden;
@@ -66,16 +67,28 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 	@Override
 	public void onClickIniciarReporte(String new_status, String coment, String img_url) {
 		// TODO Auto-generated method stub
-		String jsonReportes = "";
-		JSONObject jsonFinal = new JSONObject();
-		JSONArray arrayFinal = new JSONArray();
-		JSONObject reporte_json = new JSONObject();
 		
 		Orden or = datos.adapter.getOrden(orden_position);
+		String image_name = datos.createOrdenName(or, Datos.TIPO_IMAGEN_NUEVA, "jpg");
 		String ordenId = or.getIdSolicitud();
 		
 		or.setEstatus("Inicio de labores");
 		or.setEstatusId(new_status);
+		
+		addJsonReporte(ordenId, new_status, coment);
+		addJsonImage(image_name, img_url);
+		
+		String ordenJson = CreateOrdenJson.createFromAdapter(datos.adapter);
+		files.saveFile("ordenes.txt", ordenJson, files.BACHES_CACHE_DIRECTORY);
+		
+		createAlert("Reporte", "Se ha iniciado el reporte!!");
+	}
+	
+	public void addJsonReporte(String ordenId, String status, String coment){
+		String jsonReportes = "";
+		JSONObject jsonFinal = new JSONObject();
+		JSONArray arrayFinal = new JSONArray();
+		JSONObject reporte_json = new JSONObject();
 		
 		if(files.existsFile("reportes.txt", files.BACHES_CACHE_DIRECTORY)){
 			jsonReportes = files.readFile("reportes.txt", files.BACHES_CACHE_DIRECTORY);
@@ -86,12 +99,11 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 			}catch(JSONException e){
 				e.printStackTrace();
 			}
-			
 		}
 		
 		try{
 			reporte_json.put("SolicitudId", ordenId);
-			reporte_json.put("SolicitudEstatus", new_status);
+			reporte_json.put("SolicitudEstatus", status);
 			reporte_json.put("SolicitudComentario", coment);
 			
 			arrayFinal.put(reporte_json);
@@ -99,6 +111,37 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 			
 			files.saveFile("reportes.txt", jsonFinal.toString(), files.BACHES_CACHE_DIRECTORY);
 			Log.i("REPORTE", files.readFile("reportes.txt", files.BACHES_CACHE_DIRECTORY));
+		}catch(JSONException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void addJsonImage(String image_name, String url){
+		String jsonImage = "";
+		JSONObject jsonFinal = new JSONObject();
+		JSONArray arrayFinal = new JSONArray();
+		JSONObject image_json = new JSONObject();
+		
+		if(files.existsFile("images.txt", files.BACHES_CACHE_DIRECTORY)){
+			jsonImage = files.readFile("images.txt", files.BACHES_CACHE_DIRECTORY);
+			
+			try{
+				JSONObject json = new JSONObject(jsonImage);
+				arrayFinal = json.getJSONArray("images");
+			}catch(JSONException e){
+				e.printStackTrace();
+			}
+		}
+		
+		try{
+			image_json.put("ImageName", image_name);
+			image_json.put("ImagePath", url);
+			
+			arrayFinal.put(image_json);
+			jsonFinal.put("images", arrayFinal);
+			
+			files.saveFile("images.txt", jsonFinal.toString(), files.BACHES_CACHE_DIRECTORY);
+			Log.i("IMAGES", files.readFile("images.txt", files.BACHES_CACHE_DIRECTORY));
 		}catch(JSONException e){
 			e.printStackTrace();
 		}

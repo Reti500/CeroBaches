@@ -41,9 +41,6 @@ public class OrdenFragment extends Fragment {
 	
 	private Datos datos;
 	private OrdenListener listener;
-	
-	private int orden_position;
-	
 	private Files files;
 	
 	private GoogleMap myMap;
@@ -93,7 +90,7 @@ public class OrdenFragment extends Fragment {
 	}
 	
 	public void setOrdenPosition(int position){
-		this.orden_position = position;
+//		this.orden_position = position;
 		Orden or = datos.data_orden.get(position);
 		
 		estado.setText("Estatus: " + or.getEstatus());

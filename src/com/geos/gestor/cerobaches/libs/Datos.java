@@ -22,6 +22,13 @@ public class Datos {
 	public static final int ESTATUS_ORDEN_DE_TRABAJO_LEIDA = 15;
 	public static final int ESTATUS_ESPERANDO_FIN_DE_CONVOCATORIA = 16;
 	public static final int ESTATUS_CANALIZAR = 17;
+	
+	public static final String TIPO_IMAGEN_NUEVA = "nueva";
+	public static final String TIPO_IMAGEN_INICIO = "inicio";
+	public static final String TIPO_IMAGEN_FIN = "fin";
+	
+	public static final String PICTURE_BUCKET = "data.saltillo.gestorsocial.mx";
+	public static final String PICTURE__BASE_DIRECTORY = "solicitudes/";
 	//-----------------------------------------------------------------------
 	
 	private static Datos instance;
@@ -39,5 +46,17 @@ public class Datos {
 		}
 		
 		return instance;
+	}
+	
+	public String createOrdenName(Orden orden, String tipo, String ext){
+		String separador = "_";
+		String url =
+				PICTURE__BASE_DIRECTORY +
+				orden.getIdSolicitud() + "/" +
+				orden.getIdSolicitud() + separador +
+				orden.getFechaLinux() + separador +
+				tipo + "." + ext;
+		
+		return url;
 	}
 }
