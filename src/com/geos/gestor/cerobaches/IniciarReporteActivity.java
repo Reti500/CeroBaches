@@ -69,7 +69,7 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 		// TODO Auto-generated method stub
 		
 		Orden or = datos.adapter.getOrden(orden_position);
-		String image_name = datos.createOrdenName(or, Datos.TIPO_IMAGEN_NUEVA, "jpg");
+		String image_name = datos.createOrdenName(or, Datos.TIPO_IMAGEN_INICIO, "jpg");
 		String ordenId = or.getIdSolicitud();
 		
 		or.setEstatus("Inicio de labores");
@@ -90,8 +90,8 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 		JSONArray arrayFinal = new JSONArray();
 		JSONObject reporte_json = new JSONObject();
 		
-		if(files.existsFile("reportes.txt", files.BACHES_CACHE_DIRECTORY)){
-			jsonReportes = files.readFile("reportes.txt", files.BACHES_CACHE_DIRECTORY);
+		if(files.existsFile(Datos.REPORTES_INICIO_FILE_NAME, files.BACHES_CACHE_DIRECTORY)){
+			jsonReportes = files.readFile(Datos.REPORTES_INICIO_FILE_NAME, files.BACHES_CACHE_DIRECTORY);
 			
 			try{
 				JSONObject json = new JSONObject(jsonReportes);
@@ -109,8 +109,7 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 			arrayFinal.put(reporte_json);
 			jsonFinal.put("reportes", arrayFinal);
 			
-			files.saveFile("reportes.txt", jsonFinal.toString(), files.BACHES_CACHE_DIRECTORY);
-			Log.i("REPORTE", files.readFile("reportes.txt", files.BACHES_CACHE_DIRECTORY));
+			files.saveFile(Datos.REPORTES_INICIO_FILE_NAME, jsonFinal.toString(), files.BACHES_CACHE_DIRECTORY);
 		}catch(JSONException e){
 			e.printStackTrace();
 		}
@@ -122,8 +121,8 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 		JSONArray arrayFinal = new JSONArray();
 		JSONObject image_json = new JSONObject();
 		
-		if(files.existsFile("images.txt", files.BACHES_CACHE_DIRECTORY)){
-			jsonImage = files.readFile("images.txt", files.BACHES_CACHE_DIRECTORY);
+		if(files.existsFile(Datos.IMAGENES_FILE_NAME, files.BACHES_CACHE_DIRECTORY)){
+			jsonImage = files.readFile(Datos.IMAGENES_FILE_NAME, files.BACHES_CACHE_DIRECTORY);
 			
 			try{
 				JSONObject json = new JSONObject(jsonImage);
@@ -140,8 +139,7 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 			arrayFinal.put(image_json);
 			jsonFinal.put("images", arrayFinal);
 			
-			files.saveFile("images.txt", jsonFinal.toString(), files.BACHES_CACHE_DIRECTORY);
-			Log.i("IMAGES", files.readFile("images.txt", files.BACHES_CACHE_DIRECTORY));
+			files.saveFile(Datos.IMAGENES_FILE_NAME, jsonFinal.toString(), files.BACHES_CACHE_DIRECTORY);
 		}catch(JSONException e){
 			e.printStackTrace();
 		}

@@ -29,6 +29,10 @@ public class Datos {
 	
 	public static final String PICTURE_BUCKET = "data.saltillo.gestorsocial.mx";
 	public static final String PICTURE__BASE_DIRECTORY = "solicitudes/";
+	
+	public static final String REPORTES_INICIO_FILE_NAME = "reportes_inicio.txt";
+	public static final String REPORTES_FIN_FILE_NAME = "reportes_fin.txt";
+	public static final String IMAGENES_FILE_NAME = "images.txt";
 	//-----------------------------------------------------------------------
 	
 	private static Datos instance;

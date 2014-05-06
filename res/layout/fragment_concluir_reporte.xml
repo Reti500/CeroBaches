@@ -1,16 +1,67 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="NestedWeights"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.geos.gestor.cerobaches.ConcluirReporteActivity$PlaceholderFragment" >
+    android:orientation="vertical"
+    android:weightSum="7" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+	<Spinner
+	    android:id="@+id/concluir_reporte_fragment_spiner_status_fin"
+	    android:layout_width="fill_parent"
+	    android:layout_height="0sp"
+	    android:layout_weight="1" />
+	
+	<EditText
+	    android:id="@+id/concluir_reporte_fragment_edit_costales"
+	    android:layout_width="fill_parent"
+	    android:layout_height="0sp"
+	    android:inputType="number"
+	    android:hint="@string/numero_de_costales"
+	    android:layout_weight="1" />
 
-</RelativeLayout>
+	<EditText
+	    android:id="@+id/concluir_reporte_edit_comentarios"
+	    android:layout_width="match_parent"
+	    android:layout_height="0sp"
+	    android:ems="10"
+	    android:layout_weight="1"
+	    android:hint="@string/comentarios" >
+
+	    <requestFocus />
+	</EditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:orientation="vertical"
+            android:layout_weight="3"
+            android:gravity="center" >
+
+            <ImageButton
+                android:id="@+id/concluir_reporte_image_foto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/common_signin_btn_icon_focus_light"
+                android:contentDescription="@string/tomar_foto" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tomar_foto"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/concluir_reporte_button_aceptar"
+            android:layout_width="fill_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1"
+            android:text="@string/finalizar_reporte"
+            android:layout_gravity="center_horizontal"
+            android:enabled="false" />
+        
+</LinearLayout>

@@ -84,7 +84,7 @@ public class OrdenFragment extends Fragment {
 			}
 		});
 		
-		new DownloadImageTask(imgButtonMapa).execute("http://todoiphone.net/wp-content/uploads/2012/10/iOS6-Apple-Maps-icon.jpeg");
+//		new DownloadImageTask(imgButtonMapa).execute("http://todoiphone.net/wp-content/uploads/2012/10/iOS6-Apple-Maps-icon.jpeg");
 		
 		return rootView;
 	}

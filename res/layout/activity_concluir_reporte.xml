@@ -1,8 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.geos.gestor.cerobaches.ConcluirReporteActivity"
-    tools:ignore="MergeRootFrame" />
-
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    class="com.geos.gestor.cerobaches.fragments.ConcluirReporteFragment"
+    android:id="@+id/concluir_reporte_fragment"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" />
