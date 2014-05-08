@@ -45,6 +45,7 @@ public class ConcluirReporteFragment extends Fragment {
 	private String estatus;
 	private String urlImagen;
 	private ConcluirReporteListener listener;
+	private Bitmap imageBitmap;
 		
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,9 +68,13 @@ public class ConcluirReporteFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		        
-		        startActivityForResult(intent, TAKE_PICTURE);
+//				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//		        
+//		        startActivityForResult(intent, TAKE_PICTURE);
+				Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			    if (takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
+			        startActivityForResult(takePictureIntent, TAKE_PICTURE);
+			    }
 			}
 		});
 		
@@ -81,7 +86,7 @@ public class ConcluirReporteFragment extends Fragment {
 				if(listener != null){
 					listener.onClickConcluirReporte(
 							estatus, comentario.getText().toString(), 
-							urlImagen, costales.getText().toString());
+							imageBitmap, costales.getText().toString());
 				}
 			}
 		});
@@ -127,18 +132,25 @@ public class ConcluirReporteFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 //		if (requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK && intent != null){
-		if (resultCode == Activity.RESULT_OK){
-			// get bundle
-            Bundle extras = intent.getExtras();
- 
-            // get bitmap
-//            Log.i("URL", intent.getData().toString());
-            Bitmap bitMap = (Bitmap) extras.get("data");
-            tomarFoto.setImageBitmap(bitMap);
-            
-            urlImagen = intent.getData().toString();
-//            imgenButton.setEnabled(false);
-            aceptar.setEnabled(true);
-        }
+//		if (resultCode == Activity.RESULT_OK){
+//			// get bundle
+//            Bundle extras = intent.getExtras();
+// 
+//            // get bitmap
+////            Log.i("URL", intent.getData().toString());
+//            Bitmap bitMap = (Bitmap) extras.get("data");
+//            tomarFoto.setImageBitmap(bitMap);
+//            
+//            urlImagen = intent.getData().toString();
+////            imgenButton.setEnabled(false);
+//            aceptar.setEnabled(true);
+//        }
+		if (requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
+	        Bundle extras = intent.getExtras();
+	        imageBitmap = (Bitmap) extras.get("data");
+	        tomarFoto.setImageBitmap(imageBitmap);
+	        aceptar.setEnabled(true);
+//	        img_url = intent.getData().toString();
+	    }
     }
 }

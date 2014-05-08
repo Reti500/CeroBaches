@@ -226,7 +226,8 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f020020;
     }
     public static final class id {
-        public static final int action_settings=0x7f050023;
+        public static final int action_settings=0x7f05002f;
+        public static final int actualizar=0x7f050031;
         public static final int concluir_reporte_button_aceptar=0x7f050010;
         public static final int concluir_reporte_edit_comentarios=0x7f05000d;
         public static final int concluir_reporte_fragment=0x7f050005;
@@ -234,16 +235,15 @@ containing a value of this type.
         public static final int concluir_reporte_fragment_spiner_status_fin=0x7f05000b;
         public static final int concluir_reporte_image_foto=0x7f05000e;
         public static final int frag_main_list_ordenes=0x7f050017;
-        public static final int frag_orden_button_reporte=0x7f05001f;
-        public static final int frag_orden_text_descripcion=0x7f05001c;
-        public static final int frag_orden_text_direccion=0x7f05001a;
-        public static final int frag_orden_text_estado=0x7f050019;
-        public static final int frag_orden_text_referencia=0x7f05001b;
-        public static final int frag_orden_text_solicitud_id=0x7f050018;
-        public static final int fragment1=0x7f050009;
-        public static final int frameMapa=0x7f05001d;
+        public static final int frag_orden_button_reporte=0x7f05002b;
+        public static final int frag_orden_text_descripcion=0x7f050028;
+        public static final int frag_orden_text_direccion=0x7f050026;
+        public static final int frag_orden_text_estado=0x7f050025;
+        public static final int frag_orden_text_referencia=0x7f050027;
+        public static final int frag_orden_text_solicitud_id=0x7f050024;
+        public static final int frameMapa=0x7f050029;
         public static final int hybrid=0x7f050004;
-        public static final int imgReporteStatus=0x7f050020;
+        public static final int imgReporteStatus=0x7f05002c;
         public static final int iniciar_reporte_button_aceptar=0x7f050013;
         public static final int iniciar_reporte_edit_comentarios=0x7f050011;
         public static final int iniciar_reporte_fragment=0x7f050006;
@@ -253,17 +253,30 @@ containing a value of this type.
         public static final int login_edit_user_name=0x7f050014;
         public static final int login_fragment=0x7f050007;
         public static final int main_fragment=0x7f050008;
-        public static final int map=0x7f05001e;
-        public static final int menu_logout=0x7f050024;
+        public static final int map=0x7f05002a;
+        public static final int menu_logout=0x7f050032;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int nueva_solicitud=0x7f050025;
+        public static final int nueva_solicitud=0x7f050030;
+        public static final int nueva_solicitud_button_crear=0x7f050022;
+        public static final int nueva_solicitud_button_tomar_foto=0x7f050023;
+        public static final int nueva_solicitud_edit_calle=0x7f050018;
+        public static final int nueva_solicitud_edit_colonia=0x7f050019;
+        public static final int nueva_solicitud_edit_cp=0x7f05001c;
+        public static final int nueva_solicitud_edit_descripcion=0x7f05001d;
+        public static final int nueva_solicitud_edit_entidad=0x7f05001b;
+        public static final int nueva_solicitud_edit_latitud=0x7f05001f;
+        public static final int nueva_solicitud_edit_longitud=0x7f050020;
+        public static final int nueva_solicitud_edit_municipio=0x7f05001a;
+        public static final int nueva_solicitud_edit_referencia=0x7f05001e;
+        public static final int nueva_solicitud_fragment=0x7f050009;
+        public static final int nueva_solicitud_image_foto=0x7f050021;
         public static final int orden_fragment=0x7f05000a;
         public static final int satellite=0x7f050002;
         public static final int terrain=0x7f050003;
         public static final int textView1=0x7f05000f;
-        public static final int txtDireccion=0x7f050021;
-        public static final int txtFecha=0x7f050022;
+        public static final int txtDireccion=0x7f05002d;
+        public static final int txtFecha=0x7f05002e;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f070000;
@@ -316,6 +329,8 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f060014;
+        public static final int calle=0x7f060030;
+        public static final int colonia=0x7f060031;
         public static final int comentarios=0x7f06002f;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
@@ -388,17 +403,23 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060013;
+        public static final int cp=0x7f060034;
+        public static final int crear=0x7f060037;
         public static final int descripcion=0x7f060027;
         public static final int direccion=0x7f060025;
+        public static final int entidad=0x7f060033;
         public static final int estado=0x7f060024;
         public static final int finalizar_reporte=0x7f06002c;
         public static final int hello_world=0x7f06001c;
         public static final int idSolicitud=0x7f060023;
         public static final int iniciar_reporte=0x7f06002b;
+        public static final int latitud=0x7f060035;
         /**  Location client code resources (prefix with location_client) 
          */
         public static final int location_client_powered_by_google=0x7f06001a;
         public static final int login=0x7f06001f;
+        public static final int longitud=0x7f060036;
+        public static final int municipio=0x7f060032;
         public static final int numero_de_costales=0x7f06002e;
         public static final int password=0x7f060021;
         public static final int referencia=0x7f060026;
@@ -406,7 +427,7 @@ containing a value of this type.
         public static final int title_activity_concluir_reporte=0x7f06002d;
         public static final int title_activity_iniciar_reporte=0x7f06002a;
         public static final int title_activity_login=0x7f06001e;
-        public static final int title_activity_nueva_solicitud=0x7f060030;
+        public static final int title_activity_nueva_solicitud=0x7f060038;
         public static final int title_activity_orden=0x7f060022;
         public static final int tomar_foto=0x7f060028;
         public static final int username=0x7f060020;

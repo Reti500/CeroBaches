@@ -13,9 +13,9 @@ import com.geos.gestor.cerobaches.libs.Orden;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -65,18 +65,21 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 	}
 
 	@Override
-	public void onClickIniciarReporte(String new_status, String coment, String img_url) {
+	public void onClickIniciarReporte(String new_status, String coment, Bitmap img) {
 		// TODO Auto-generated method stub
 		
 		Orden or = datos.adapter.getOrden(orden_position);
-		String image_name = datos.createOrdenName(or, Datos.TIPO_IMAGEN_INICIO, "jpg");
+		String image_name = datos.getOrdenName(or, Datos.TIPO_IMAGEN_INICIO, "jpg");
+		String image_url = datos.createOrdenName(or, Datos.TIPO_IMAGEN_INICIO, "jpg");
 		String ordenId = or.getIdSolicitud();
+		
+		files.saveImage(image_name, files.BACHES_PHOTOS_DIRECTORY, img);
 		
 		or.setEstatus("Inicio de labores");
 		or.setEstatusId(new_status);
 		
 		addJsonReporte(ordenId, new_status, coment);
-		addJsonImage(image_name, img_url);
+		addJsonImage(image_name, files.BACHES_PHOTOS_DIRECTORY+image_name, image_url);
 		
 		String ordenJson = CreateOrdenJson.createFromAdapter(datos.adapter);
 		files.saveFile("ordenes.txt", ordenJson, files.BACHES_CACHE_DIRECTORY);
@@ -102,9 +105,9 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 		}
 		
 		try{
-			reporte_json.put("SolicitudId", ordenId);
-			reporte_json.put("SolicitudEstatus", status);
-			reporte_json.put("SolicitudComentario", coment);
+			reporte_json.put("id", ordenId);
+			reporte_json.put("idEstatus", status);
+			reporte_json.put("comentario", coment);
 			
 			arrayFinal.put(reporte_json);
 			jsonFinal.put("reportes", arrayFinal);
@@ -115,7 +118,7 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 		}
 	}
 	
-	public void addJsonImage(String image_name, String url){
+	public void addJsonImage(String image_name, String path, String image_url){
 		String jsonImage = "";
 		JSONObject jsonFinal = new JSONObject();
 		JSONArray arrayFinal = new JSONArray();
@@ -134,7 +137,8 @@ public class IniciarReporteActivity extends FragmentActivity implements IniciarR
 		
 		try{
 			image_json.put("ImageName", image_name);
-			image_json.put("ImagePath", url);
+			image_json.put("ImageUrl", image_url);
+			image_json.put("ImagePath", path);
 			
 			arrayFinal.put(image_json);
 			jsonFinal.put("images", arrayFinal);

@@ -31,7 +31,8 @@ public class Datos {
 	public static final String PICTURE__BASE_DIRECTORY = "solicitudes/";
 	
 	public static final String REPORTES_INICIO_FILE_NAME = "reportes_inicio.txt";
-	public static final String REPORTES_FIN_FILE_NAME = "reportes_fin.txt";
+	public static final String REPORTES_FIN_FILE_NAME = "reportes_inicio.txt";
+	public static final String REPORTES_NUEVOS = "repostes_nuevos.txt";
 	public static final String IMAGENES_FILE_NAME = "images.txt";
 	//-----------------------------------------------------------------------
 	
@@ -60,6 +61,31 @@ public class Datos {
 				orden.getIdSolicitud() + separador +
 				orden.getFechaLinux() + separador +
 				tipo + "." + ext;
+		
+		return url;
+	}
+	
+	public String createOrdenName(String id, String fecha, String tipo){
+		String separador = "_";
+		String url = PICTURE__BASE_DIRECTORY + id + "/" 
+				+ id + separador + fecha + separador + tipo + "." + "jpg";
+		
+		return url;
+	}
+	
+	public String getOrdenName(Orden orden, String tipo, String ext){
+		String separador = "_";
+		String url =
+				orden.getIdSolicitud() + separador +
+				orden.getFechaLinux() + separador +
+				tipo + "." + ext;
+		
+		return url;
+	}
+	
+	public String getOrdenName(String id, String fecha, String tipo){
+		String separador = "_";
+		String url = id + separador + fecha + separador + tipo + "." + "jpg";
 		
 		return url;
 	}

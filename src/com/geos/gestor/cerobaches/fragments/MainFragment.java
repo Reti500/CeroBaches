@@ -44,9 +44,6 @@ public class MainFragment extends Fragment {
 	//Files
 	private Files files;
 	
-	// Functions
-	private Functions functions;
-	
 	// Listener
 	private MainListener listener;
 	
@@ -65,7 +62,6 @@ public class MainFragment extends Fragment {
 		
 		context = rootView.getContext();
 		files = new Files();
-		functions = new Functions();
 		datos = Datos.getInstance();
 		
 		files.createDirectories();
@@ -166,7 +162,7 @@ public class MainFragment extends Fragment {
 						.getString("descripcion") : "";
 				String direccion = sol.isNull("calle") != true ? sol
 						.getString("calle") : "";
-				String fecha = sol.isNull("fechaCreacion") != true ? functions
+				String fecha = sol.isNull("fechaCreacion") != true ? Functions
 						.linuxToGTM(sol.getString("fechaCreacion"))
 						: "";
 				String estatus = sol.isNull("EstatusSolicitud") != true ? sol
@@ -195,7 +191,7 @@ public class MainFragment extends Fragment {
 						.getString("longitud") : "";
 				String EstatusId = sol.isNull("EstatusId") != true ? sol
 						.getString("EstatusId") : "";
-				String fechaLinux = sol.isNull("fechaCreacion") != true ? functions
+				String fechaLinux = sol.isNull("fechaCreacion") != true ? Functions
 						.linuxFormat(sol.getString("fechaCreacion")) : "";
 				String referencia = sol.isNull("referencia") != true ?
 						sol.getString("referencia") : "";

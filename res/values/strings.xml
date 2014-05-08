@@ -22,6 +22,14 @@
     <string name="title_activity_concluir_reporte">ConcluirReporteActivity</string>
     <string name="numero_de_costales"># de costales</string>
     <string name="comentarios">Comentarios:</string>
+    <string name="calle">Calle</string>
+    <string name="colonia">Colonia</string>
+    <string name="municipio">Minicipio</string>
+    <string name="entidad">Entidad</string>
+    <string name="cp">CP</string>
+    <string name="latitud">Latitud</string>
+    <string name="longitud">Longitud</string>
+    <string name="crear">Crear</string>
     <string name="title_activity_nueva_solicitud">NuevaSolicitudActivity</string>
 
 </resources>

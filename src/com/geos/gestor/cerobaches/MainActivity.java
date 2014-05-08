@@ -8,6 +8,7 @@ import com.geos.gestor.cerobaches.interfaces.MainListener;
 import com.geos.gestor.cerobaches.libs.BachesComunicador;
 import com.geos.gestor.cerobaches.libs.Comunicador.ResponseListener;
 import com.geos.gestor.cerobaches.libs.Datos;
+import com.geos.gestor.cerobaches.libs.Files;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -76,9 +77,13 @@ public class MainActivity extends FragmentActivity implements MainListener  {
 					}
 				});
 				break;
+				
 			case R.id.nueva_solicitud:
 				goNuevaSolicitud();
 				break;
+				
+			case R.id.actualizar:
+				actualizarDatos();
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -144,6 +149,46 @@ public class MainActivity extends FragmentActivity implements MainListener  {
 		intent.putExtra("position", position);
 		
 		startActivity(intent);
+	}
+	
+	public void actualizarDatos(){
+		dialog = ProgressDialog.show(MainActivity.this, "Please wait ...", "Actualizando datos ...", true);
+		
+		final Handler run = new Handler();
+		run.post(new Runnable() {
+
+			@Override
+			public void run() {
+				uploadData();
+			}
+		});
+	}
+	
+	public void uploadData(){
+		Files files = new Files();
+		BachesComunicador sendData = BachesComunicador.getInstance();
+		String json = files.readFile(Datos.REPORTES_INICIO_FILE_NAME, files.BACHES_CACHE_DIRECTORY);
+		
+		sendData.cambiarEstatusAll(json, new ResponseListener() {
+			
+			@Override
+			public void success(String val) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+			
+			@Override
+			public void onfinal() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void error(String msg) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 }

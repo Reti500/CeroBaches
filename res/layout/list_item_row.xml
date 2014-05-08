@@ -3,8 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="10sp"
-    android:paddingBottom="10sp"
+    android:paddingTop="15sp"
+    android:paddingBottom="15sp"
     android:weightSum="6"
     android:baselineAligned="false" >
 
@@ -19,7 +19,8 @@
                 android:id="@+id/imgReporteStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher"/>
+                android:src="@drawable/circle_grey"
+                android:contentDescription="@string/tomar_foto" />
         </LinearLayout>
 
         <LinearLayout
@@ -33,9 +34,8 @@
                 android:id="@+id/txtDireccion"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Direccion"
                 android:gravity="left"
-                android:textSize="12sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -50,8 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Fecha"
-                android:textSize="12sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
 </LinearLayout>

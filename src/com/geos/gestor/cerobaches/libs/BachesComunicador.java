@@ -77,6 +77,13 @@ public class BachesComunicador extends Comunicador {
 		post(build_url (URL_BASE, "Solicitud", "ChangeEstatus"), null, paramsList, listener);
 	}
 	
+	// Cambiar el estatus de todos
+	public final void cambiarEstatusAll(String json, ResponseListener listener){
+		ArrayList<NameValuePair> paramsList = new ArrayList<NameValuePair>();
+		paramsList.add( new BasicNameValuePair("myjson", json ));
+		post(build_url (URL_BASE, "Solicitud", "json"), null, paramsList, listener);
+	}
+	
 	// Guardar info de la imagen
 	public final void uploadImagen(String id, String idEstatus, String url, String nombre, ResponseListener listener){
 		ArrayList<NameValuePair> paramsList = new ArrayList<NameValuePair>();
@@ -92,6 +99,13 @@ public class BachesComunicador extends Comunicador {
 		HashMap<String, String> params = new HashMap<String, String>(2);
 		params.put("idSolicitud", idSolicitud);
 		get(build_url (URL_BASE, "Historial"), null, params, listener);
+	}
+	
+	public final void location(String lat, String lon, ResponseListener listener){
+		HashMap<String, String> params = new HashMap<String, String>(2);
+		params.put("latlng", lat + "," + lon);
+		params.put("sensor", "false");
+		get(build_url ("http://maps.googleapis.com/maps/api/geocode/", "json"), null, params, listener);
 	}
 }
 

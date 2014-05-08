@@ -13,7 +13,7 @@ public class Functions {
 	}
 	
 	@SuppressLint("SimpleDateFormat")
-	public String linuxToGTM(String date){
+	public static String linuxToGTM(String date){
 		Pattern p = Pattern.compile("-?\\d+");
 		Matcher m = p.matcher(date);
 		
@@ -32,7 +32,7 @@ public class Functions {
 		return s;
 	}
 	
-	public String linuxFormat(String date){
+	public static String linuxFormat(String date){
 		return date.replaceAll("\\D+","");
 	}
 }

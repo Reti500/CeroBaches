@@ -97,7 +97,7 @@ public class Files {
             
 			FileOutputStream out = new FileOutputStream(file);
 			
-			img.compress(Bitmap.CompressFormat.JPEG, 90, out);
+			img.compress(Bitmap.CompressFormat.JPEG, 80, out);
 			
 			Log.i(LOG_TAG, "Image SAVE!");
 		} catch (Exception e) {
