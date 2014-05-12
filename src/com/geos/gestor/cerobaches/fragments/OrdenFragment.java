@@ -3,13 +3,16 @@ package com.geos.gestor.cerobaches.fragments;
 import java.io.FileOutputStream;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 import com.geos.gestor.cerobaches.R;
 import com.geos.gestor.cerobaches.interfaces.OrdenListener;
 import com.geos.gestor.cerobaches.libs.Datos;
 import com.geos.gestor.cerobaches.libs.DownloadImageTask;
 import com.geos.gestor.cerobaches.libs.Files;
+import com.geos.gestor.cerobaches.libs.GPSTracker;
 import com.geos.gestor.cerobaches.libs.Orden;
 
 import android.content.Context;
@@ -45,6 +48,8 @@ public class OrdenFragment extends Fragment {
 	
 	private GoogleMap myMap;
 	private FrameLayout frameMapa;
+	private GPSTracker gps;
+	private Orden or;
 		
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,6 +89,8 @@ public class OrdenFragment extends Fragment {
 			}
 		});
 		
+		myMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map))
+		        .getMap();
 //		new DownloadImageTask(imgButtonMapa).execute("http://todoiphone.net/wp-content/uploads/2012/10/iOS6-Apple-Maps-icon.jpeg");
 		
 		return rootView;
@@ -91,7 +98,7 @@ public class OrdenFragment extends Fragment {
 	
 	public void setOrdenPosition(int position){
 //		this.orden_position = position;
-		Orden or = datos.data_orden.get(position);
+		or = datos.data_orden.get(position);
 		
 		estado.setText("Estatus: " + or.getEstatus());
 		idOrden.setText("Solicitud: " + or.getIdSolicitud());
@@ -101,6 +108,7 @@ public class OrdenFragment extends Fragment {
 				+ or.getEntidad() + ", " + or.getCP());
 		descripcion.setText("Referencia: " + or.getDescripcion());
 		referencia.setText("Descripcion: " + or.getReferencia());
+
 	}
 	
 	public void setListener(OrdenListener listener){
@@ -108,26 +116,28 @@ public class OrdenFragment extends Fragment {
 	}
 	
 	public void CaptureMapScreen(){
-		SnapshotReadyCallback callback = new SnapshotReadyCallback() {
-			Bitmap bitmap;
-			
-			@Override
-			public void onSnapshotReady(Bitmap snapshot) {
-				// TODO Auto-generated method stub
-				bitmap = snapshot;
+		if(or != null){
+			SnapshotReadyCallback callback = new SnapshotReadyCallback() {
+				Bitmap bitmap;
 				
-				try {
-					FileOutputStream out = new FileOutputStream(
-							files.BACHES_PHOTOS_DIRECTORY + "pothoMap" + System.currentTimeMillis() + ".png");
-					bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
+				@Override
+				public void onSnapshotReady(Bitmap snapshot) {
+					// TODO Auto-generated method stub
+					bitmap = snapshot;
+					
+					try {
+						FileOutputStream out = new FileOutputStream(
+								files.BACHES_PHOTOS_DIRECTORY + 
+								or.getIdSolicitud()+"_pothoMap_.png");
+						bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
 				}
-			}
-		};
-		
-		myMap.snapshot(callback);
+			};
+			myMap.snapshot(callback);
+		}
 	}
 	
 	public void irMapa(){

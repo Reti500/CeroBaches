@@ -1,6 +1,8 @@
 package com.geos.gestor.cerobaches.fragments;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.ListResourceBundle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +13,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,9 @@ import com.geos.gestor.cerobaches.libs.Files;
 import com.geos.gestor.cerobaches.libs.Functions;
 import com.geos.gestor.cerobaches.libs.Orden;
 import com.geos.gestor.cerobaches.libs.OrdenAdapter;
+import com.geos.gestor.cerobaches.libs.ParseJson;
+import com.geos.gestor.cerobaches.libs.SendToServer;
+import com.geos.gestor.cerobaches.libs.SendToServer.SendToServerListener;
 
 public class MainFragment extends Fragment {
 	// Context
@@ -38,9 +44,6 @@ public class MainFragment extends Fragment {
 	// Lista
 	private ListView lista_ordenes;
 	
-	// Dialog
-	private ProgressDialog dialog;
-	
 	//Files
 	private Files files;
 	
@@ -49,6 +52,7 @@ public class MainFragment extends Fragment {
 	
 	// Datos
 	private Datos datos;
+	private ParseJson serialize;
 	
 	public MainFragment(){
 		super();
@@ -63,6 +67,7 @@ public class MainFragment extends Fragment {
 		context = rootView.getContext();
 		files = new Files();
 		datos = Datos.getInstance();
+		serialize = new ParseJson();
 		
 		files.createDirectories();
 		
@@ -84,7 +89,7 @@ public class MainFragment extends Fragment {
 			}
 		});
 		
-		dialog = ProgressDialog.show(context, "Please wait ...", "Cargando ordenes ...", true);
+//		dialog = ProgressDialog.show(context, "Please wait ...", "Cargando ordenes ...", true);
 		
 		if(files.existsFile(ORDENES_FILE_NAME, files.BACHES_CACHE_DIRECTORY)){
 			cargarOrdenesEnCache();
@@ -96,40 +101,74 @@ public class MainFragment extends Fragment {
 	}
 	
 	public void cargarOrdenesDeTrabajo() {
-		final Handler run = new Handler();
-		run.post(new Runnable() {
-
-			@Override
-			public void run() {
-				
-				
-				BachesComunicador sendData = BachesComunicador.getInstance();
-
-				sendData.getSolicitudes(new ResponseListener() {
-
+		SendToServer sendData = SendToServer.getInstance();
+		
+		sendData.sendByGet(context, null, SendToServer.SOLICITUDES_URL, 
+				new SendToServerListener() {
+					
 					@Override
 					public void success(String val) {
-						files.saveFile(ORDENES_FILE_NAME, val, files.BACHES_CACHE_DIRECTORY);
+						// TODO Auto-generated method stub
+						String[] vals = {"State", "Message", "Data"};
+						HashMap<String, String> map = serialize.parse(val, vals);
 						
-						listarOrdenes(val);
-//						
-//						updateList();
+						if(map.get("State") != null && map.get("State").equals(Datos.RESPONSE_OK)
+								&& map.get("Data") != null){
+							files.saveFile(ORDENES_FILE_NAME,
+									map.get("Data"), files.BACHES_CACHE_DIRECTORY);
+							listarOrdenes(map.get("Data"));
+						}else{
+							Log.i("NADA", "NO ENTRO :(");
+						}
 					}
-
+					
 					@Override
 					public void onfinal() {
 						// TODO Auto-generated method stub
-
+						
 					}
-
+					
 					@Override
 					public void error(String msg) {
 						// TODO Auto-generated method stub
-
+						
 					}
 				});
-			}
-		});
+		
+//		final Handler run = new Handler();
+//		run.post(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				
+//				
+//				BachesComunicador sendData = BachesComunicador.getInstance();
+//
+//				sendData.getSolicitudes(new ResponseListener() {
+//
+//					@Override
+//					public void success(String val) {
+//						files.saveFile(ORDENES_FILE_NAME, val, files.BACHES_CACHE_DIRECTORY);
+//						
+//						listarOrdenes(val);
+////						
+////						updateList();
+//					}
+//
+//					@Override
+//					public void onfinal() {
+//						// TODO Auto-generated method stub
+//
+//					}
+//
+//					@Override
+//					public void error(String msg) {
+//						// TODO Auto-generated method stub
+//
+//					}
+//				});
+//			}
+//		});
 	}
 	
 	public void cargarOrdenesEnCache(){
@@ -140,8 +179,6 @@ public class MainFragment extends Fragment {
 	
 	public void updateList(){
 		datos.adapter.notifyDataSetChanged();
-		if(dialog.isShowing())
-			dialog.dismiss();
 	}
 	
 	public void setListener(MainListener listener){
@@ -149,6 +186,7 @@ public class MainFragment extends Fragment {
 	}
 	
 	public void listarOrdenes(String val){
+		Log.i("DATA", val);
 		try {
 			JSONObject json = new JSONObject(val);
 			JSONArray solicitudes = json.getJSONArray("solicitudes");
@@ -196,7 +234,9 @@ public class MainFragment extends Fragment {
 				String referencia = sol.isNull("referencia") != true ?
 						sol.getString("referencia") : "";
 
-				Orden or = new Orden(estatus, direccion, fecha);
+				Orden or = new Orden();
+				or.setEstatus(estatus);
+				or.setFecha(fecha);
 				or.setIdSolicitud(id);
 				or.setDescripcion(descripcion);
 				or.setCalle(calle);
@@ -225,5 +265,48 @@ public class MainFragment extends Fragment {
 		
 		updateList();
 //		dialog.dismiss();
+//		String[] vals = {
+//				"EstatusSolicitud",
+//				"idSolicitud",
+//				"descripcion",
+//				"calle",
+//				"colonia",
+//				"cp",
+//				"Municipio",
+//				"Entidad",
+//				"calleCruce1",
+//				"calleCruce2",
+//				"latitud",
+//				"longitud",
+//				"EstatusId",
+//				"fechaCreacion",
+//				"referencia",
+//		};
+//		
+//		HashMap<String, String> map = serialize.parse(val, vals);
+//		
+//		Orden or = new Orden();
+//		or.setEstatus(map.get("EstatusSolicitud"));
+//		or.setFecha(map.get("fechaCreacion"));
+//		or.setIdSolicitud(map.get("idSolicitud"));
+//		or.setDescripcion(map.get("descripcion"));
+//		or.setCalle(map.get("calle"));
+//		or.setColonia(map.get("colonia"));
+////		or.setNumInterio(numInterior);
+////		or.setNumExterior(numExterior);
+//		or.setCP(map.get("cp"));
+//		or.setMunicipio(map.get("Municipio"));
+//		or.setEntidad(map.get("Entidad"));
+//		or.setCalleCruce1(map.get("calleCruce1"));
+//		or.setCalleCruce2(map.get("calleCruce2"));
+//		or.setLatitud(map.get("latitud"));
+//		or.setLongitud(map.get("longitud"));
+//		or.setEstatusId(map.get("EstatusId"));
+//		or.setFechaLinux(Functions.linuxFormat(map.get("fechaCreacion")));
+//		or.setReferencia(map.get("referencia"));
+//
+//		datos.data_orden.add(or);
+//		
+//		updateList();
 	}
 }

@@ -90,6 +90,13 @@ public class Files {
 //        return data;
 	}
 	
+	public File getFile(String file_name, String path){
+		File ext_dir = Environment.getExternalStorageDirectory();
+        File file = new File(ext_dir.getAbsolutePath() + path, file_name);
+        
+        return file;
+	}
+	
 	public void saveImage(String image_name, String path, Bitmap img){
 		try {
 			File ext_dir = Environment.getExternalStorageDirectory();

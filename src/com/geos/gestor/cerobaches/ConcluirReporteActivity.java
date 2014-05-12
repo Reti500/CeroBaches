@@ -13,6 +13,7 @@ import com.geos.gestor.cerobaches.libs.Orden;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -30,6 +31,8 @@ public class ConcluirReporteActivity extends FragmentActivity implements Conclui
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_concluir_reporte);
 
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		if (savedInstanceState == null) {
 //			getFragmentManager().beginTransaction()
 //					.add(R.id.container, new PlaceholderFragment()).commit();

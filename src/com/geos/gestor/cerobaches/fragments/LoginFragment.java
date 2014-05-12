@@ -1,16 +1,13 @@
 package com.geos.gestor.cerobaches.fragments;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +18,11 @@ import android.widget.Toast;
 
 import com.geos.gestor.cerobaches.R;
 import com.geos.gestor.cerobaches.interfaces.LoginListener;
-import com.geos.gestor.cerobaches.libs.BachesComunicador;
-import com.geos.gestor.cerobaches.libs.Comunicador.ResponseListener;
+import com.geos.gestor.cerobaches.libs.Datos;
+import com.geos.gestor.cerobaches.libs.SendToServer.SendParams;
+import com.geos.gestor.cerobaches.libs.ParseJson;
+import com.geos.gestor.cerobaches.libs.SendToServer;
+import com.geos.gestor.cerobaches.libs.SendToServer.SendToServerListener;
 
 public class LoginFragment extends Fragment {
 	// Context
@@ -32,9 +32,6 @@ public class LoginFragment extends Fragment {
 	private EditText username;
 	private EditText password;
 	private Button login;
-	
-	// ProgressDialog
-	private ProgressDialog dialog;
 	
 	// Listener
 	private LoginListener listener;
@@ -59,18 +56,7 @@ public class LoginFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				dialog = ProgressDialog.show(context, "Please wait ...", "Iniciando sesion", true);
-				
-				final Handler run = new Handler();
-				run.post(new Runnable() {
-
-					@Override
-					public void run() {
-						login();
-					}
-				});
+				login();
 			}
 		});
 		
@@ -78,55 +64,52 @@ public class LoginFragment extends Fragment {
 	}
 		
 	public void login(){
-		BachesComunicador sendData = BachesComunicador.getInstance();
+		SendToServer sendData = SendToServer.getInstance();
 		
-		sendData.login(username.getText().toString(), 
-				password.getText().toString(), new ResponseListener() {
-					
+		ArrayList<SendParams> params = sendData.createParams(
+				new SendParams("username", username.getText().toString()),
+				new SendParams("password", password.getText().toString())
+		);
+		
+		sendData.sendByPost(context, params, SendToServer.LOGIN_URL, 
+				new SendToServerListener() {
+			
 			@Override
 			public void success(String val) {
 				// TODO Auto-generated method stub
-				try{
-					JSONObject json = new JSONObject(val);
-					String state = json.getString("State");
-					String name = json.isNull("UserName") != true ? json.getString("UserName") : "";
-					
-					if(state.equals("Logged")){
-						SharedPreferences preferences = context.getSharedPreferences("userPref", Context.MODE_PRIVATE);
-						Editor editor = preferences.edit();
-						
-						editor.putBoolean("savedUserData", true);
-						editor.putString("username", username.getText().toString());
-						editor.putString("password", password.getText().toString());
-						editor.putString("name", name);
-						editor.commit();
-						
-						if(listener != null){
-							listener.goMain();
-						}
-					}else{
-						Toast.makeText(context, "Error en el usuario o contraseña", Toast.LENGTH_LONG).show();
-						password.setText("");
-					}
-				} catch (JSONException e){
-					e.printStackTrace();
-				}
-				dialog.dismiss();
 				
-				Log.i("LOGIN", "Sesion creada!");
-			}
+				ParseJson serialize = new ParseJson();
+				String[] vals = {"State", "Message", "Data"};
+				HashMap<String, String> map = serialize.parse(val, vals);
+				
+				if(map.get("State").equals(Datos.RESPONSE_OK)){
+					SharedPreferences preferences = context.getSharedPreferences("userPref", Context.MODE_PRIVATE);
+					Editor editor = preferences.edit();
 					
+					editor.putBoolean("savedUserData", true);
+					editor.putString("username", username.getText().toString());
+					editor.putString("password", password.getText().toString());
+					editor.commit();
+					
+					if(listener != null){
+						listener.goMain();
+					}
+				}else{
+					Toast.makeText(context, "Error en el usuario o contraseña", Toast.LENGTH_LONG).show();
+					password.setText("");
+				}
+			}
+			
 			@Override
 			public void onfinal() {
 				// TODO Auto-generated method stub
 				
 			}
-					
+			
 			@Override
 			public void error(String msg) {
 				// TODO Auto-generated method stub
-				dialog.dismiss();
-				Log.e("LOGIN ERROR", "Error al iniciar sesion");
+				Toast.makeText(context, "Error de red", Toast.LENGTH_LONG).show();
 			}
 		});
 	}

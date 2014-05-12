@@ -1,5 +1,9 @@
 package com.geos.gestor.cerobaches;
 
+import java.io.File;
+import java.util.HashMap;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,15 +13,20 @@ import com.geos.gestor.cerobaches.libs.BachesComunicador;
 import com.geos.gestor.cerobaches.libs.Comunicador.ResponseListener;
 import com.geos.gestor.cerobaches.libs.Datos;
 import com.geos.gestor.cerobaches.libs.Files;
-
+import com.geos.gestor.cerobaches.libs.ParseJson;
+import com.geos.gestor.cerobaches.libs.SendToServer;
+import com.geos.gestor.cerobaches.libs.SendToServer.SendToServerListener;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -31,6 +40,8 @@ public class MainActivity extends FragmentActivity implements MainListener  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		if (savedInstanceState == null) {
 //			getFragmentManager().beginTransaction()
 //					.add(R.id.main_fragment, new MainFragment()).commit();
@@ -84,34 +95,49 @@ public class MainActivity extends FragmentActivity implements MainListener  {
 				
 			case R.id.actualizar:
 				actualizarDatos();
+				break;
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
 	
 	public void logout(){
-		BachesComunicador sendData = BachesComunicador.getInstance();
+		SendToServer sendData = SendToServer.getInstance();
 		
-		sendData.logout(new ResponseListener() {
+		sendData.sendByGet(MainActivity.this, null, SendToServer.LOGOUT_URL, 
+				new SendToServerListener() {
 			
+			@Override
 			public void success(String val) {
-				try{
-					JSONObject json = new JSONObject(val);
-					String state = json.getString("State");
-					
-					if(state.equals("Logout")){
-						goLogin();
-					}
-				} catch (JSONException e){
-					e.printStackTrace();
+				// TODO Auto-generated method stub
+//				try{
+//					JSONObject json = new JSONObject(val);
+//					String state = json.getString("State");
+//					
+//					if(state.equals("Logout")){
+//						goLogin();
+//					}
+//				} catch (JSONException e){
+//					e.printStackTrace();
+//				}
+				ParseJson serialize = new ParseJson();
+				String[] vals = {"State", "Message", "Data"};
+				HashMap<String, String> map = serialize.parse(val, vals);
+				
+				if(map.get("State").equals(Datos.RESPONSE_OK)){
+					Files files = new Files();
+					files.getFile("ordenes.txt", files.BACHES_CACHE_DIRECTORY).delete();
+					goLogin();
 				}
 			}
 			
+			@Override
 			public void onfinal() {
 				// TODO Auto-generated method stub
 				
 			}
 			
+			@Override
 			public void error(String msg) {
 				// TODO Auto-generated method stub
 				
@@ -175,6 +201,7 @@ public class MainActivity extends FragmentActivity implements MainListener  {
 			public void success(String val) {
 				// TODO Auto-generated method stub
 				dialog.dismiss();
+				uploadImages();
 			}
 			
 			@Override
@@ -190,5 +217,32 @@ public class MainActivity extends FragmentActivity implements MainListener  {
 			}
 		});
 	}
-
+	
+	public void uploadImages(){
+		Files files = new Files();
+		String strjson = files.readFile(Datos.IMAGENES_FILE_NAME, files.BACHES_CACHE_DIRECTORY);
+		
+		try{
+			JSONObject json = new JSONObject(strjson);
+			JSONArray images = json.getJSONArray("images");
+			
+			if(images.length() > 0){
+				JSONObject img = images.getJSONObject(0);
+				
+//				new UploadImageS3().execute(img.getString("ImagePath"), img.getString("ImageName"));
+				File ext_dir = Environment.getExternalStorageDirectory();
+				File file = new File(ext_dir.getAbsolutePath() 
+						+ img.getString("ImagePath"));
+				
+				if(file.exists()){
+					Log.i("URI -> ", file.toURI().toString());
+//					UploadServer server = new UploadServer(file, "http://www.newstellerapp.com/api/v1/noticias/1");
+//					server.start();
+				}
+				
+			}
+		}catch(JSONException e){
+			
+		}
+	}
 }

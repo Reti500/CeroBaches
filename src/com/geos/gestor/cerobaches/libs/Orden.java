@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 public class Orden implements Parcelable{
 	private String idSolicitud;				// get set
-	private String direccion; 				// get set
 	private String fecha;					// get set
 	private String estatus;					// get set
 	private String descripcion;				// get set
@@ -40,7 +39,6 @@ public class Orden implements Parcelable{
 		this.colonia = in.readString();
 		this.cp = in.readString();
 		this.descripcion = in.readString();
-		this.direccion = in.readString();
 		this.entidad = in.readString();
 		this.estatus = in.readString();
 		this.fecha = in.readString();
@@ -55,30 +53,24 @@ public class Orden implements Parcelable{
 		this.referencia = in.readString();
 	}
 	
-	public Orden(String direccion, String fecha){
-		super();
-		
-		this.direccion = direccion;
-		this.fecha = fecha;
-	}
+//	public Orden(String fecha){
+//		super();
+//		
+//		this.fecha = fecha;
+//	}
 	
-	public Orden(String estatus, String direccion, String fecha){
-		super();
-		
-		this.estatus = estatus;
-		this.direccion = direccion;
-		this.fecha = fecha;
-	}
+//	public Orden(String estatus, String direccion, String fecha){
+//		super();
+//		
+//		this.estatus = estatus;
+//		this.fecha = fecha;
+//	}
 	
 	// ---------------------------------------------------------------------
 	// SET
 	// ---------------------------------------------------------------------
 	public void setIdSolicitud(String id){
 		this.idSolicitud = id;
-	}
-	
-	public void setDireccion(String dir){
-		this.direccion = dir;
 	}
 	
 	public void setFecha(String fecha){
@@ -155,10 +147,6 @@ public class Orden implements Parcelable{
 	
 	public String getIdSolicitud(){
 		return idSolicitud;
-	}
-	
-	public String getDireccion(){
-		return direccion;
 	}
 	
 	public String getFecha(){
@@ -248,7 +236,6 @@ public class Orden implements Parcelable{
 		dest.writeString(this.colonia);
 		dest.writeString(this.cp);
 		dest.writeString(this.descripcion);
-		dest.writeString(this.direccion);
 		dest.writeString(this.entidad);
 		dest.writeString(this.estatus);
 		dest.writeString(this.fecha);

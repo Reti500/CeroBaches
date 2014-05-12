@@ -13,6 +13,7 @@ import com.geos.gestor.cerobaches.libs.Files;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -27,6 +28,8 @@ public class NuevaSolicitudActivity extends FragmentActivity implements NuevaSol
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nueva_solicitud);
 
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		if (savedInstanceState == null) {
 //			getFragmentManager().beginTransaction()
 //					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -64,7 +67,11 @@ public class NuevaSolicitudActivity extends FragmentActivity implements NuevaSol
 		
 		createAlert("Nueva Solicitud", "Se creo la solicitud!!");
 		
-		addJsonImage(image_name, files.BACHES_PHOTOS_DIRECTORY+image_name, image_url);
+		if(Datos.isNetworkAvailable(NuevaSolicitudActivity.this)){
+			
+		}else{
+			addJsonImage(image_name, files.BACHES_PHOTOS_DIRECTORY+image_name, image_url);
+		}
 	}
 	
 	public void addJsonImage(String image_name, String path, String image_url){

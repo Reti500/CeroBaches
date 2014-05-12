@@ -2,6 +2,10 @@ package com.geos.gestor.cerobaches.libs;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 public class Datos {
 	
 	// PUBLIC CONSTANTS
@@ -34,6 +38,9 @@ public class Datos {
 	public static final String REPORTES_FIN_FILE_NAME = "reportes_inicio.txt";
 	public static final String REPORTES_NUEVOS = "repostes_nuevos.txt";
 	public static final String IMAGENES_FILE_NAME = "images.txt";
+	
+	public static final String RESPONSE_OK = "OK";
+	public static final String RESPONSE_ERROR = "ERROR";
 	//-----------------------------------------------------------------------
 	
 	private static Datos instance;
@@ -88,5 +95,12 @@ public class Datos {
 		String url = id + separador + fecha + separador + tipo + "." + "jpg";
 		
 		return url;
+	}
+	
+	public static boolean isNetworkAvailable(Context context) {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 }

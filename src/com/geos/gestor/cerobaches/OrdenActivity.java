@@ -5,6 +5,7 @@ import com.geos.gestor.cerobaches.interfaces.OrdenListener;
 import com.geos.gestor.cerobaches.libs.Datos;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -22,6 +23,8 @@ public class OrdenActivity extends FragmentActivity implements OrdenListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_orden);
 
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		datos = Datos.getInstance();
 		
 		if (savedInstanceState == null) {

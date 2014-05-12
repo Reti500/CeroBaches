@@ -1,5 +1,6 @@
 package com.geos.gestor.cerobaches.fragments;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -23,14 +24,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.geos.gestor.cerobaches.libs.SendToServer.SendToServerListener;
+
 import com.geos.gestor.cerobaches.R;
 import com.geos.gestor.cerobaches.interfaces.NuevaSolicitudListener;
 import com.geos.gestor.cerobaches.libs.BachesComunicador;
 import com.geos.gestor.cerobaches.libs.Datos;
 import com.geos.gestor.cerobaches.libs.Files;
+import com.geos.gestor.cerobaches.libs.SendToServer;
 import com.geos.gestor.cerobaches.libs.Comunicador.ResponseListener;
 import com.geos.gestor.cerobaches.libs.Functions;
 import com.geos.gestor.cerobaches.libs.GPSTracker;
+import com.geos.gestor.cerobaches.libs.SendToServer.SendParams;
 
 public class NuevaSolicitudFragment extends Fragment {
 	
@@ -59,6 +64,7 @@ public class NuevaSolicitudFragment extends Fragment {
 	private ArrayList<String> listAddress;
 	private NuevaSolicitudListener listener;
 	private Bitmap imageBitmap;
+	private Files files;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +73,7 @@ public class NuevaSolicitudFragment extends Fragment {
 				container, false);
 		
 		context = rootView.getContext();
+		files = new Files();
 		listAddress = new ArrayList<String>();
 		gps = new GPSTracker(context);
 		
@@ -97,7 +104,7 @@ public class NuevaSolicitudFragment extends Fragment {
 
 					@Override
 					public void run() {
-						crearSolicitud();
+						enviarNuevaSolicitud();
 					}
 				});
 			}
@@ -152,64 +159,104 @@ public class NuevaSolicitudFragment extends Fragment {
 		if (requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
 	        Bundle extras = intent.getExtras();
 	        imageBitmap = (Bitmap) extras.get("data");
+	        image_name = "photo_"+System.currentTimeMillis();
+	        files.saveImage(image_name, files.BACHES_PHOTOS_DIRECTORY, imageBitmap);
 	        foto.setImageBitmap(imageBitmap);
 //	        urlImagen = intent.getData().toString();
 	    }
     }
 	
-	public void crearSolicitud(){
-		BachesComunicador sendData = BachesComunicador.getInstance();
+	public void enviarNuevaSolicitud(){
+		SendToServer sendData = SendToServer.getInstance();
 		
-		sendData.createSolicitud(
-				calle.getText().toString(), colonia.getText().toString(), 
-				municipio.getText().toString(), entidad.getText().toString(),
-				cp.getText().toString(), latitud.getText().toString(), 
-				longitud.getText().toString(), descripcion.getText().toString(),
-				referencia.getText().toString(), new ResponseListener() {
-					
-					@Override
-					public void success(String val) {
-						// TODO Auto-generated method stub
-						
-//						if(progress.isShowing()){
-//							progress.dismiss();
-//						}
-						
-						try{
-							JSONObject json = new JSONObject(val);
-							String id = json.getString("id");
-							String fecha = Functions.linuxFormat(json.getString("fecha"));
-							
-							Datos datos = Datos.getInstance();
-					        Files files = new Files();
-					        
-					        image_name = datos.getOrdenName(id, Datos.TIPO_IMAGEN_NUEVA, "jpg");
-					        image_url = datos.createOrdenName(id, Datos.TIPO_IMAGEN_NUEVA, "jpg");
-					        files.saveImage(image_name, files.BACHES_PHOTOS_DIRECTORY, imageBitmap);
-						}catch(JSONException e){
-							e.printStackTrace();
-						}
-						
-						if(listener != null){
-							listener.onClickCrearSolicitud(image_name, image_url);
-						}
-						
-						dialog.dismiss();
-					}
-					
-					@Override
-					public void onfinal() {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void error(String msg) {
-						// TODO Auto-generated method stub
-						dialog.dismiss();
-					}
-				});
+		ArrayList<SendParams> params = sendData.createParams(
+			new SendParams("calle", calle.getText().toString()),
+			new SendParams("colonia", colonia.getText().toString()),
+			new SendParams("municipio", municipio.getText().toString()),
+			new SendParams("entidad", entidad.getText().toString()),
+			new SendParams("cp", cp.getText().toString()),
+			new SendParams("latitud", latitud.getText().toString()),
+			new SendParams("longitud", longitud.getText().toString()),
+			new SendParams("descripcion", descripcion.getText().toString()),
+			new SendParams("referencia", referencia.getText().toString()),
+			new SendParams("image", files.getFile(image_name, files.BACHES_PHOTOS_DIRECTORY))
+		);
+		
+		sendData.sendByPost(context, params, "solicitud/create", new SendToServerListener() {
+			
+			@Override
+			public void success(String val) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onfinal() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void error(String msg) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
+	
+//	public void crearSolicitud(){
+//		BachesComunicador sendData = BachesComunicador.getInstance();
+//		
+//		sendData.createSolicitud(
+//				calle.getText().toString(), colonia.getText().toString(), 
+//				municipio.getText().toString(), entidad.getText().toString(),
+//				cp.getText().toString(), latitud.getText().toString(), 
+//				longitud.getText().toString(), descripcion.getText().toString(),
+//				referencia.getText().toString(), new ResponseListener() {
+//					
+//					@Override
+//					public void success(String val) {
+//						// TODO Auto-generated method stub
+//						
+////						if(progress.isShowing()){
+////							progress.dismiss();
+////						}
+//						
+//						try{
+//							JSONObject json = new JSONObject(val);
+//							String id = json.getString("id");
+//							String fecha = Functions.linuxFormat(json.getString("fecha"));
+//							
+//							Datos datos = Datos.getInstance();
+//					        Files files = new Files();
+//					        
+//					        image_name = datos.getOrdenName(id, Datos.TIPO_IMAGEN_NUEVA, "jpg");
+//					        image_url = datos.createOrdenName(id, Datos.TIPO_IMAGEN_NUEVA, "jpg");
+//					        files.saveImage(image_name, files.BACHES_PHOTOS_DIRECTORY, imageBitmap);
+//						}catch(JSONException e){
+//							e.printStackTrace();
+//						}
+//						
+//						if(listener != null){
+//							listener.onClickCrearSolicitud(image_name, image_url);
+//						}
+//						
+//						dialog.dismiss();
+//					}
+//					
+//					@Override
+//					public void onfinal() {
+//						// TODO Auto-generated method stub
+//						
+//					}
+//					
+//					@Override
+//					public void error(String msg) {
+//						// TODO Auto-generated method stub
+//						dialog.dismiss();
+//					}
+//				});
+//	}
 	
 	public void parseLocation(){
 		BachesComunicador sendData = BachesComunicador.getInstance();
