@@ -1,6 +1,5 @@
 package com.geos.gestor.cerobaches.fragments;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -28,12 +27,8 @@ import com.geos.gestor.cerobaches.libs.SendToServer.SendToServerListener;
 
 import com.geos.gestor.cerobaches.R;
 import com.geos.gestor.cerobaches.interfaces.NuevaSolicitudListener;
-import com.geos.gestor.cerobaches.libs.BachesComunicador;
-import com.geos.gestor.cerobaches.libs.Datos;
 import com.geos.gestor.cerobaches.libs.Files;
 import com.geos.gestor.cerobaches.libs.SendToServer;
-import com.geos.gestor.cerobaches.libs.Comunicador.ResponseListener;
-import com.geos.gestor.cerobaches.libs.Functions;
 import com.geos.gestor.cerobaches.libs.GPSTracker;
 import com.geos.gestor.cerobaches.libs.SendToServer.SendParams;
 
@@ -125,7 +120,7 @@ public class NuevaSolicitudFragment extends Fragment {
 			}
 		});
 		
-		dialog = ProgressDialog.show(context, "Please wait ...", "Buscando tu ubicacion", true);
+//		dialog = ProgressDialog.show(context, "Please wait ...", "Buscando tu ubicacion", true);
 		
 		final Handler run = new Handler();
 		run.post(new Runnable() {
@@ -182,7 +177,7 @@ public class NuevaSolicitudFragment extends Fragment {
 			new SendParams("image", files.getFile(image_name, files.BACHES_PHOTOS_DIRECTORY))
 		);
 		
-		sendData.sendByPost(context, params, "solicitud/create", new SendToServerListener() {
+		sendData.sendByPost(context, params, SendToServer.NUEVA_SOLICITUD_URL, new SendToServerListener() {
 			
 			@Override
 			public void success(String val) {
@@ -259,9 +254,16 @@ public class NuevaSolicitudFragment extends Fragment {
 //	}
 	
 	public void parseLocation(){
-		BachesComunicador sendData = BachesComunicador.getInstance();
+		String url = "http://maps.googleapis.com/maps/api/geocode/json";
+		SendToServer sendData = SendToServer.getInstance();
+//		BachesComunicador sendData = BachesComunicador.getInstance();
+		ArrayList<SendParams> params = sendData.createParams(
+				new SendParams("latlng", ""+gps.getLatitude()+","+gps.getLongitude()),
+				new SendParams("sensor", "true"));
 		
-		sendData.location(""+gps.getLatitude(), ""+gps.getLongitude(), new ResponseListener() {
+		
+		sendData.sendByGet(context, params, url, new SendToServerListener(){
+//		sendData.location(""+gps.getLatitude(), ""+gps.getLongitude(), new ResponseListener() {
 			
 			@Override
 			public void success(String val) {
@@ -290,7 +292,7 @@ public class NuevaSolicitudFragment extends Fragment {
 					e.printStackTrace();
 				}
 				
-				dialog.dismiss();
+//				dialog.dismiss();
 			}
 			
 			@Override

@@ -22,6 +22,7 @@ import com.geos.gestor.cerobaches.libs.Datos;
 import com.geos.gestor.cerobaches.libs.SendToServer.SendParams;
 import com.geos.gestor.cerobaches.libs.ParseJson;
 import com.geos.gestor.cerobaches.libs.SendToServer;
+import com.geos.gestor.cerobaches.libs.Sessions;
 import com.geos.gestor.cerobaches.libs.SendToServer.SendToServerListener;
 
 public class LoginFragment extends Fragment {
@@ -90,6 +91,9 @@ public class LoginFragment extends Fragment {
 					editor.putString("username", username.getText().toString());
 					editor.putString("password", password.getText().toString());
 					editor.commit();
+					
+					Sessions session = Sessions.getInstance();
+					session.active();
 					
 					if(listener != null){
 						listener.goMain();
