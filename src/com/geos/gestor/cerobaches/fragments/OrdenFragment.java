@@ -89,8 +89,11 @@ public class OrdenFragment extends Fragment {
 			}
 		});
 		
-		myMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map))
-		        .getMap();
+//		SupportMapFragment mapFrag = (SupportMapFragment) getFragmentManager()
+//                .findFragmentById(R.id.map);
+//		myMap = mapFrag.getMap();
+//		myMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map))
+//		        .getMap();
 //		new DownloadImageTask(imgButtonMapa).execute("http://todoiphone.net/wp-content/uploads/2012/10/iOS6-Apple-Maps-icon.jpeg");
 		
 		return rootView;

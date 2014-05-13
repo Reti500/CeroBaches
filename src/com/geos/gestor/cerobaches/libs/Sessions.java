@@ -39,7 +39,7 @@ public class Sessions {
 		return state;
 	}
 	
-	public void login(Context context, String username, String password){
+	public void login(Context context, String username, String password, SendToServerListener listener){
 		SendToServer sendData = SendToServer.getInstance();
 		
 		ArrayList<SendParams> params = sendData.createParams(
@@ -47,35 +47,32 @@ public class Sessions {
 				new SendParams("password", password)
 		);
 		
-		sendData.sendByPost(context, params, SendToServer.LOGIN_URL, 
-				new SendToServerListener() {
+		sendData.sendByPost(context, params, SendToServer.LOGIN_URL, listener);
 			
-			@Override
-			public void success(String val) {
-				// TODO Auto-generated method stub
-				
-				ParseJson serialize = new ParseJson();
-				String[] vals = {"State", "Message", "Data"};
-				HashMap<String, String> map = serialize.parse(val, vals);
-				
-				if(map.get("State").equals(Datos.RESPONSE_OK)){
-					state = true;
-				}else{
-					state = false;
-				}
-			}
-			
-			@Override
-			public void onfinal() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void error(String msg) {
+//			@Override
+//			public void success(String val) {
+//				// TODO Auto-generated method stub
+//				
+//				ParseJson serialize = new ParseJson();
+//				String[] vals = {"State", "Message", "Data"};
+//				HashMap<String, String> map = serialize.parse(val, vals);
+//				
+//				if(map.get("State").equals(Datos.RESPONSE_OK)){
+//					state = true;
+//				}else{
+//					state = false;
+//				}
+//			}
+//			
+//			@Override
+//			public void onfinal() {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//			
+//			@Override
+//			public void error(String msg) {
 				// TODO Auto-generated method stub
 //				Toast.makeText(context, "Error de red", Toast.LENGTH_LONG).show();
-			}
-		});
 	}
 }

@@ -92,9 +92,9 @@ public class MainFragment extends Fragment {
 //		dialog = ProgressDialog.show(context, "Please wait ...", "Cargando ordenes ...", true);
 		
 		if(files.existsFile(ORDENES_FILE_NAME, files.BACHES_CACHE_DIRECTORY)){
-//			cargarOrdenesEnCache();
+			cargarOrdenesEnCache();
 		}else{
-//			cargarOrdenesDeTrabajo();
+			cargarOrdenesDeTrabajo();
 		}
 		
 		return rootView;

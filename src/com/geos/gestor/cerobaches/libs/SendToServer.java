@@ -38,6 +38,8 @@ public class SendToServer {
 	public static final String LOGOUT_URL = BASE_URL + "Account/LogOff";
 	public static final String SOLICITUDES_URL = BASE_URL + "Solicitud";
 	public static final String NUEVA_SOLICITUD_URL = BASE_URL + "Solicitud/Create";
+	public static final String JSON_SOLICITUDES_URL = BASE_URL + "Solicitud/json";
+	public static final String UPLOAD_IMAGE_URL = BASE_URL +  "Solicitud/UploadImage";
 	
 	
 	private static SendToServer instance;

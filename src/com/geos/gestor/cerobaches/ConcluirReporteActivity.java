@@ -80,7 +80,8 @@ public class ConcluirReporteActivity extends FragmentActivity implements Conclui
 		or.setEstatusId(new_status);
 		
 		addJsonReporte(ordenId, new_status, coment, costales);
-		addJsonImage(image_name, files.BACHES_PHOTOS_DIRECTORY+image_name, image_url);
+		addJsonImage(image_name, files.BACHES_PHOTOS_DIRECTORY+image_name, image_url,
+				ordenId, new_status);
 		
 		String ordenJson = CreateOrdenJson.createFromAdapter(datos.adapter);
 		files.saveFile("ordenes.txt", ordenJson, files.BACHES_CACHE_DIRECTORY);
@@ -99,7 +100,7 @@ public class ConcluirReporteActivity extends FragmentActivity implements Conclui
 			
 			try{
 				JSONObject json = new JSONObject(jsonReportes);
-				arrayFinal = json.getJSONArray("reportes");
+				arrayFinal = json.getJSONArray("solicitudes");
 			}catch(JSONException e){
 				e.printStackTrace();
 			}
@@ -112,7 +113,7 @@ public class ConcluirReporteActivity extends FragmentActivity implements Conclui
 			reporte_json.put("costales", costales);
 			
 			arrayFinal.put(reporte_json);
-			jsonFinal.put("reportes", arrayFinal);
+			jsonFinal.put("solicitudes", arrayFinal);
 			
 			files.saveFile(Datos.REPORTES_FIN_FILE_NAME, jsonFinal.toString(), files.BACHES_CACHE_DIRECTORY);
 		}catch(JSONException e){
@@ -120,7 +121,7 @@ public class ConcluirReporteActivity extends FragmentActivity implements Conclui
 		}
 	}
 	
-	public void addJsonImage(String image_name, String path, String image_url){
+	public void addJsonImage(String image_name, String path, String image_url, String id, String estatus){
 		String jsonImage = "";
 		JSONObject jsonFinal = new JSONObject();
 		JSONArray arrayFinal = new JSONArray();
@@ -141,6 +142,8 @@ public class ConcluirReporteActivity extends FragmentActivity implements Conclui
 			image_json.put("ImageName", image_name);
 			image_json.put("ImageUrl", image_url);
 			image_json.put("ImagePath", path);
+			image_json.put("ImageID", id);
+			image_json.put("ImageEstatus", estatus);
 			
 			arrayFinal.put(image_json);
 			jsonFinal.put("images", arrayFinal);

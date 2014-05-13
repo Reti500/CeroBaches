@@ -1,6 +1,7 @@
 package com.geos.gestor.cerobaches.fragments;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,11 +11,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,10 +30,13 @@ import com.geos.gestor.cerobaches.libs.SendToServer.SendToServerListener;
 
 import com.geos.gestor.cerobaches.R;
 import com.geos.gestor.cerobaches.interfaces.NuevaSolicitudListener;
+import com.geos.gestor.cerobaches.libs.Datos;
 import com.geos.gestor.cerobaches.libs.Files;
+import com.geos.gestor.cerobaches.libs.ParseJson;
 import com.geos.gestor.cerobaches.libs.SendToServer;
 import com.geos.gestor.cerobaches.libs.GPSTracker;
 import com.geos.gestor.cerobaches.libs.SendToServer.SendParams;
+import com.geos.gestor.cerobaches.libs.Sessions;
 
 public class NuevaSolicitudFragment extends Fragment {
 	
@@ -92,16 +98,52 @@ public class NuevaSolicitudFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				dialog = ProgressDialog.show(context, "Please wait ...", "Creando la solicitud", true);
-				
-				final Handler run = new Handler();
-				run.post(new Runnable() {
-
-					@Override
-					public void run() {
-						enviarNuevaSolicitud();
-					}
-				});
+//				dialog = ProgressDialog.show(context, "Please wait ...", "Creando la solicitud", true);
+//				
+//				final Handler run = new Handler();
+//				run.post(new Runnable() {
+//
+//					@Override
+//					public void run() {
+//						enviarNuevaSolicitud();
+//					}
+//				});
+				Sessions s = Sessions.getInstance();
+				if(s.isActive()){
+					enviarNuevaSolicitud();
+				}else{
+					SharedPreferences preferences = context.getSharedPreferences("userPref", Context.MODE_PRIVATE);
+					String username = preferences.getString("username", "");
+					String password = preferences.getString("password", "");
+					s.login(context, username, password,
+							new SendToServerListener() {
+								
+								@Override
+								public void success(String val) {
+									// TODO Auto-generated method stub
+									ParseJson serialize = new ParseJson();
+									String[] vals = {"State", "Message", "Data"};
+									HashMap<String, String> map = serialize.parse(val, vals);
+									
+									if(map.get("State").equals(Datos.RESPONSE_OK)){
+										enviarNuevaSolicitud();
+										Log.i("SESSIONS", "ENTRO :)");
+									}
+								}
+								
+								@Override
+								public void onfinal() {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void error(String msg) {
+									// TODO Auto-generated method stub
+									
+								}
+							});
+				}
 			}
 		});
 		
@@ -140,24 +182,12 @@ public class NuevaSolicitudFragment extends Fragment {
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-//        if (requestCode == TAKE_PICTURE && resultCode== Activity.RESULT_OK && intent != null){
-//		if (resultCode == Activity.RESULT_OK){
-//			// get bundle
-//            Bundle extras = intent.getExtras();
-// 
-//            // get bitmap
-//            Bitmap bitMap = (Bitmap) extras.get("data");
-//            foto.setImageBitmap(bitMap);
-//            
-//            urlImagen = intent.getData().toString();
-//        }
 		if (requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
 	        Bundle extras = intent.getExtras();
 	        imageBitmap = (Bitmap) extras.get("data");
 	        image_name = "photo_"+System.currentTimeMillis();
 	        files.saveImage(image_name, files.BACHES_PHOTOS_DIRECTORY, imageBitmap);
 	        foto.setImageBitmap(imageBitmap);
-//	        urlImagen = intent.getData().toString();
 	    }
     }
 	
@@ -173,8 +203,8 @@ public class NuevaSolicitudFragment extends Fragment {
 			new SendParams("latitud", latitud.getText().toString()),
 			new SendParams("longitud", longitud.getText().toString()),
 			new SendParams("descripcion", descripcion.getText().toString()),
-			new SendParams("referencia", referencia.getText().toString()),
-			new SendParams("image", files.getFile(image_name, files.BACHES_PHOTOS_DIRECTORY))
+			new SendParams("referencia", referencia.getText().toString())
+//			new SendParams("image", files.getFile(image_name, files.BACHES_PHOTOS_DIRECTORY))
 		);
 		
 		sendData.sendByPost(context, params, SendToServer.NUEVA_SOLICITUD_URL, new SendToServerListener() {
@@ -304,7 +334,7 @@ public class NuevaSolicitudFragment extends Fragment {
 			@Override
 			public void error(String msg) {
 				// TODO Auto-generated method stub
-				dialog.dismiss();
+//				dialog.dismiss();
 			}
 		});
 	}
